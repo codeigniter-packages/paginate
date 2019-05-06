@@ -101,7 +101,9 @@ class Paginate {
             } else {
                 $this->db->like($config['field_name'], preg_replace('/\*/', '', $str), 'both');
             }
-        } else{
+        } elseif($config['field_type'] == 'string'){
+            $this->db->where($config['field_name'], $str);
+        } elseif ($config['field_type'] == 'number' AND is_numeric($str)) {
             $this->db->where($config['field_name'], $str);
         }
     }

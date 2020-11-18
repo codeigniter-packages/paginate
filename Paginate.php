@@ -6,6 +6,7 @@ class Paginate {
 
     protected $cur_page_segment = 'page';
     protected $per_page_segment = 'per_page';
+    protected $total_segment='total';
     protected $per_page = 10;
     protected $per_page_max = 10;
     protected $input_get;
@@ -121,7 +122,7 @@ class Paginate {
         $query_data = $this->db->get();
 
         //获取总行数
-        $total_rows = $this->db->count_all_results();
+        $total_rows = $this->input_get[$this->total_segment]?$this->input_get[$this->total_segment]:$this->db->count_all_results();
         //清理掉cache
         $this->db->flush_cache();
 

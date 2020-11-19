@@ -122,7 +122,16 @@ class Paginate {
         $query_data = $this->db->get();
 
         //获取总行数
-        $total_rows = isset($this->input_get[$this->total_segment])?$this->input_get[$this->total_segment]:$this->db->count_all_results();
+        if(isset($this->input_get[$this->total_segment]) && is_numeric($this->input_get[$this->total_segment])){
+            $total_rows = (int)$this->input_get[$this->total_segment];
+        }else{
+            $last_row = $query_data->last_row();
+            if(is_null($last_row)){
+                $total_rows = 0;
+            }else{
+                $total_rows = (isset($last_row->CI_rownum) && $last_row->CI_rownum <= $per_page)?$query_data->num_rows():$this->db->count_all_results();
+            }
+        }
         //清理掉cache
         $this->db->flush_cache();
 
